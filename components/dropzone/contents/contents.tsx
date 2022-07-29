@@ -37,7 +37,7 @@ export const Contents = () => {
     }
     // DB へアップロードするために、FormData へ append する
     const formData = new FormData();
-    files.forEach((file) => formData.append(file.name, file));
+    files.forEach((file) => formData.append(file.name, file, file.name));
     return formData;
   };
 
