@@ -9,4 +9,8 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  &__button {
+    margin-top: 20px;
+  }
 }
