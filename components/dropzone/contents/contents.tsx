@@ -20,7 +20,21 @@ export const Contents = () => {
     const dataUrls = acceptedFiles.map((file) => URL.createObjectURL(file));
     setPreviewImagePaths(dataUrls);
   };
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { fileRejections, getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      'image/jpeg': [
+        '.jpg',
+        '.jpeg',
+        '.JPG',
+        '.JPEG',
+        '.jpe',
+        '.jfif',
+        '.pjpeg',
+        '.pjp',
+      ],
+    },
+  });
 
   const handleClickDelete = () => {
     setPreviewImagePaths([]);
@@ -41,11 +55,23 @@ export const Contents = () => {
     return formData;
   };
 
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <>
+      <div>
+        {errors.map((e) => (
+          <p key={e.code}>
+            {file.name}は許可された拡張子ではありません{e.message}
+          </p>
+        ))}
+      </div>
+    </>
+  ));
+
   return (
     <>
       <div className={styles.contents}>
         <div {...getRootProps({ className: 'dropzone' })}>
-          <input {...getInputProps()} accept="image/*" />
+          <input {...getInputProps()} />
           <p>
             Drag and drop some image files here, or click to select image files
           </p>
@@ -63,6 +89,7 @@ export const Contents = () => {
       <div className={styles.contents__button}>
         <button onClick={handleClickUpload}>Upload images</button>
       </div>
+      {fileRejectionItems}
     </>
   );
 };
